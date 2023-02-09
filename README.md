@@ -1,4 +1,4 @@
-My-iOS-Apps
-===========
+Bill Manager App
+================
 
-Sample iOS Apps
+Manage bills and track the due dates.
