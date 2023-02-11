@@ -27,14 +27,8 @@ struct AccountListView: View {
         ]
         let accounts: [Account] = PersistenceController.shared.fetchAllObjects(sortDescriptors: sortDescriptors) ?? []
 
-        accounts.forEach { account in
-            var model = AccountModel()
-            model.accountNumber = account.accountNumber ?? ""
-            model.bank = account.bank ?? ""
-            model.accountHolder = account.accountHolder ?? ""
-            model.balance = String(format: "%.2f", account.balance)
-            model.currency = account.currency ?? ""
-            model.type = account.type ?? ""
+        accounts.forEach { account in            
+            let model = getAccountModel(account: account)
             
             accountModels.append(model)
         }
@@ -59,6 +53,7 @@ struct AccountListView: View {
             return AccountModel()
         }
         var model = AccountModel()
+        model.id = account.id?.uuidString ?? UUID().uuidString
         model.accountNumber = account.accountNumber ?? ""
         model.bank = account.bank ?? ""
         model.accountHolder = account.accountHolder ?? ""

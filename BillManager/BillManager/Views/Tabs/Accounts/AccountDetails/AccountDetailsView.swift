@@ -19,8 +19,8 @@ struct AccountDetailsView: View {
     private let currencies = ModelDataManager().currencies
     private let types = ["Current", "Savings"]
     
-    private func getAccount(by accountNumber: String) -> Account? {        
-        let predicate = NSPredicate(format: "accountNumber == %@", accountNumber)
+    private func getAccount(id: String) -> Account? {
+        let predicate = NSPredicate(format: "id == %@", id)
         let account: Account? = PersistenceController.shared.fetchObject(predicate: predicate)
         return account
     }
@@ -97,12 +97,13 @@ struct AccountDetailsView: View {
                         }
                         
                         
-                        let account = getAccount(by: accountModel.accountNumber)
+                        let account = getAccount(id: accountModel.id)
                         print("account FOUND \(String(describing: account))")
                         
                         let dataModel = account ?? Account(context: viewContext)
                         
                         print("dataModel BEFORE \(dataModel)")
+                        dataModel.id = UUID(uuidString: accountModel.id)
                         dataModel.accountHolder = accountModel.accountHolder
                         dataModel.accountNumber = accountModel.accountNumber
                         dataModel.bank = accountModel.bank

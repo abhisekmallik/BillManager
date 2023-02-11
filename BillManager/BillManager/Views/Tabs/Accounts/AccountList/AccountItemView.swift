@@ -38,6 +38,7 @@ struct AccountItemView_Previews: PreviewProvider {
        let results = try? context.fetch(fetchRequest)
        let account = results![1];
        var model = AccountModel()
+       model.id = account.id?.uuidString ?? UUID().uuidString
        model.accountNumber = account.accountNumber ?? ""
        model.bank = account.bank ?? ""
        model.accountHolder = account.accountHolder ?? ""
