@@ -14,7 +14,7 @@ struct ThemeTextFieldStyle: FloatingLabelTextFieldStyle {
             .textAlignment(.leading) // Sets the alignment for text.
             .lineHeight(1) // Sets the line height.
             .selectedLineHeight(1.5) // Sets the selected line height.
-            .lineColor(.gray) // Sets the line color.
+            .lineColor(.black) // Sets the line color.
             .selectedLineColor(.blue) // Sets the selected line color.
             .titleColor(.gray) // Sets the title color.
             .selectedTitleColor(.blue) // Sets the selected title color.

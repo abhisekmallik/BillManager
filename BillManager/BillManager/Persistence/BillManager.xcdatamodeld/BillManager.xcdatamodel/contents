@@ -8,8 +8,17 @@
         <attribute name="currency" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="type" optional="YES" attributeType="String"/>
+        <relationship name="bill" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Bill" inverseName="paidFromAccount" inverseEntity="Bill"/>
     </entity>
     <entity name="Bill" representedClassName="Bill" syncable="YES" codeGenerationType="class">
+        <attribute name="currency" optional="YES" attributeType="String"/>
+        <attribute name="dueData" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="merchant" optional="YES" attributeType="String"/>
+        <attribute name="minAmount" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="paid" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="period" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="totalAmount" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="paidFromAccount" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="bill" inverseEntity="Account"/>
     </entity>
 </model>

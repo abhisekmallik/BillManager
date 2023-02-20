@@ -10,10 +10,14 @@
 		586463FE5045E5E3AAAD2278 /* Pods_BillManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 404D12B81F4E1A876E2281AC /* Pods_BillManager.framework */; };
 		6F17987478BA774973F1CD9F /* Pods_BillManagerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9979E57B1DF09F1E8EA19496 /* Pods_BillManagerTests.framework */; };
 		907C7FDE2FDF2C62DA5A6CC5 /* Pods_BillManager_BillManagerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B5575C93A4FFD27020E8752 /* Pods_BillManager_BillManagerUITests.framework */; };
+		AE844417299E52A500A4977B /* MonthYearPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE844416299E52A500A4977B /* MonthYearPickerView.swift */; };
+		AE84441A299F540B00A4977B /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE844419299F540B00A4977B /* Date.swift */; };
 		AECC4BFE2995256B001D4732 /* Currency.json in Resources */ = {isa = PBXBuildFile; fileRef = AEF3EC83299517EC00535D0C /* Currency.json */; };
 		AECC4C0429952BB7001D4732 /* ThemeTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECC4C0329952BB7001D4732 /* ThemeTextFieldStyle.swift */; };
 		AECC4C0629960EED001D4732 /* AccountItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECC4C0529960EED001D4732 /* AccountItemView.swift */; };
 		AECC4C0829960FD8001D4732 /* TotalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECC4C0729960FD8001D4732 /* TotalModel.swift */; };
+		AEF1337D299A2C360042D106 /* BillModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF1337C299A2C360042D106 /* BillModel.swift */; };
+		AEF13381299A31A80042D106 /* BillDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF13380299A31A80042D106 /* BillDetailsView.swift */; };
 		AEF3EC3C299503E400535D0C /* BillManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF3EC3B299503E400535D0C /* BillManagerApp.swift */; };
 		AEF3EC40299503E700535D0C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AEF3EC3F299503E700535D0C /* Assets.xcassets */; };
 		AEF3EC43299503E700535D0C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AEF3EC42299503E700535D0C /* Preview Assets.xcassets */; };
@@ -58,9 +62,13 @@
 		75336074634642C877F62AC5 /* Pods-BillManager-BillManagerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BillManager-BillManagerUITests.release.xcconfig"; path = "Target Support Files/Pods-BillManager-BillManagerUITests/Pods-BillManager-BillManagerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		810F2BD262A0978849F1AE0C /* Pods-BillManager-BillManagerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BillManager-BillManagerUITests.debug.xcconfig"; path = "Target Support Files/Pods-BillManager-BillManagerUITests/Pods-BillManager-BillManagerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		9979E57B1DF09F1E8EA19496 /* Pods_BillManagerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BillManagerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE844416299E52A500A4977B /* MonthYearPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthYearPickerView.swift; sourceTree = "<group>"; };
+		AE844419299F540B00A4977B /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		AECC4C0329952BB7001D4732 /* ThemeTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeTextFieldStyle.swift; sourceTree = "<group>"; };
 		AECC4C0529960EED001D4732 /* AccountItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountItemView.swift; sourceTree = "<group>"; };
 		AECC4C0729960FD8001D4732 /* TotalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalModel.swift; sourceTree = "<group>"; };
+		AEF1337C299A2C360042D106 /* BillModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillModel.swift; sourceTree = "<group>"; };
+		AEF13380299A31A80042D106 /* BillDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillDetailsView.swift; sourceTree = "<group>"; };
 		AEF3EC38299503E400535D0C /* BillManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BillManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEF3EC3B299503E400535D0C /* BillManagerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillManagerApp.swift; sourceTree = "<group>"; };
 		AEF3EC3F299503E700535D0C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -125,12 +133,44 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		AE844418299F53EF00A4977B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				AE844419299F540B00A4977B /* Date.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		AECC4C0229952BA4001D4732 /* Themes */ = {
 			isa = PBXGroup;
 			children = (
 				AECC4C0329952BB7001D4732 /* ThemeTextFieldStyle.swift */,
 			);
 			path = Themes;
+			sourceTree = "<group>";
+		};
+		AEF1337E299A31760042D106 /* BillsView */ = {
+			isa = PBXGroup;
+			children = (
+				AEF3EC7B299511DD00535D0C /* BillsView.swift */,
+			);
+			path = BillsView;
+			sourceTree = "<group>";
+		};
+		AEF1337F299A31820042D106 /* BillDetails */ = {
+			isa = PBXGroup;
+			children = (
+				AEF13380299A31A80042D106 /* BillDetailsView.swift */,
+			);
+			path = BillDetails;
+			sourceTree = "<group>";
+		};
+		AEF13382299A53F70042D106 /* CustomUI */ = {
+			isa = PBXGroup;
+			children = (
+				AE844416299E52A500A4977B /* MonthYearPickerView.swift */,
+			);
+			path = CustomUI;
 			sourceTree = "<group>";
 		};
 		AEF3EC2F299503E400535D0C = {
@@ -158,9 +198,10 @@
 		AEF3EC3A299503E400535D0C /* BillManager */ = {
 			isa = PBXGroup;
 			children = (
-				AEF3EC3F299503E700535D0C /* Assets.xcassets */,
-				AEF3EC3B299503E400535D0C /* BillManagerApp.swift */,
 				AEF3EC49299503E700535D0C /* Info.plist */,
+				AEF3EC3B299503E400535D0C /* BillManagerApp.swift */,
+				AEF3EC3F299503E700535D0C /* Assets.xcassets */,
+				AE844418299F53EF00A4977B /* Extensions */,
 				AEF3EC81299517A500535D0C /* Models */,
 				AEF3EC6B29950C8E00535D0C /* Persistence */,
 				AEF3EC41299503E700535D0C /* Preview Content */,
@@ -207,6 +248,7 @@
 		AEF3EC6C2995109200535D0C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				AEF13382299A53F70042D106 /* CustomUI */,
 				AECC4C0229952BA4001D4732 /* Themes */,
 				AEF3EC72299510FC00535D0C /* Home */,
 				AEF3EC6D299510C300535D0C /* Tabs */,
@@ -237,7 +279,8 @@
 		AEF3EC6F299510D500535D0C /* Bills */ = {
 			isa = PBXGroup;
 			children = (
-				AEF3EC7B299511DD00535D0C /* BillsView.swift */,
+				AEF1337F299A31820042D106 /* BillDetails */,
+				AEF1337E299A31760042D106 /* BillsView */,
 			);
 			path = Bills;
 			sourceTree = "<group>";
@@ -286,9 +329,10 @@
 		AEF3EC81299517A500535D0C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				AEF3EC88299519FC00535D0C /* AccountModel.swift */,
+				AEF1337C299A2C360042D106 /* BillModel.swift */,
 				AEF3EC842995181400535D0C /* CurrencyModel.swift */,
 				AEF3EC862995188800535D0C /* ModelDataManager.swift */,
-				AEF3EC88299519FC00535D0C /* AccountModel.swift */,
 				AECC4C0729960FD8001D4732 /* TotalModel.swift */,
 			);
 			path = Models;
@@ -564,10 +608,14 @@
 				AEF3EC80299511FD00535D0C /* SettingsView.swift in Sources */,
 				AEF3EC742995113800535D0C /* HomeView.swift in Sources */,
 				AECC4C0429952BB7001D4732 /* ThemeTextFieldStyle.swift in Sources */,
+				AE84441A299F540B00A4977B /* Date.swift in Sources */,
 				AEF3EC89299519FC00535D0C /* AccountModel.swift in Sources */,
 				AEF3EC872995188800535D0C /* ModelDataManager.swift in Sources */,
 				AEF3EC3C299503E400535D0C /* BillManagerApp.swift in Sources */,
+				AEF13381299A31A80042D106 /* BillDetailsView.swift in Sources */,
 				AEF3EC7E299511ED00535D0C /* ReportsView.swift in Sources */,
+				AEF1337D299A2C360042D106 /* BillModel.swift in Sources */,
+				AE844417299E52A500A4977B /* MonthYearPickerView.swift in Sources */,
 				AEF3EC7A299511B200535D0C /* AccountDetailsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -655,7 +703,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -709,7 +757,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -731,6 +779,8 @@
 				DEVELOPMENT_TEAM = 736A229UKX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Bill Manager";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -761,6 +811,8 @@
 				DEVELOPMENT_TEAM = 736A229UKX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Bill Manager";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
