@@ -1,2 +1,5 @@
 
 .DS_Store
+BillManager/BillManager.xcodeproj/xcuserdata
+BillManager/BillManager.xcworkspace/xcuserdata
+BillManager/Pods/Pods.xcodeproj/xcuserdata
