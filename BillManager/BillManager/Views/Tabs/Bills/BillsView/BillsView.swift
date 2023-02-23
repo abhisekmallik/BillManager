@@ -6,54 +6,119 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct BillsView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
-    @State private var accountModels: [AccountModel] = []
+    @State private var billModels: [Date : [BillModel]] = [:]
     @State private var isSheetPresented = false
     @State private var refresh = false
         
     private func reloadData() {
-        
+        billModels = getAllBills()
     }
     
+    private func getAllBills() -> [Date : [BillModel]] {
+        var models: [BillModel] = []
+        let sortDescriptors = [
+            NSSortDescriptor(keyPath: \Bill.dueDate, ascending: true)
+        ]
+        let bills: [Bill] = PersistenceController.shared.fetchAllObjects(sortDescriptors: sortDescriptors) ?? []
+
+        bills.forEach { bill in
+            let model = getBillModel(bill: bill)
+            models.append(model)
+        }
+        
+        let groupedBills = models.sliced(by: [.month, .year], for: \.period!)
+        return groupedBills
+    }
+    
+    private func getBillModel(bill: Bill?) -> BillModel {
+        guard let bill = bill else {
+            return BillModel()
+        }
+        let month = bill.period?.currentMonth ?? Date().currentMonth
+        var model = BillModel()
+        model.id = bill.id?.uuidString ?? UUID().uuidString
+        model.currency = bill.currency ?? ""
+        model.dueDate = bill.dueDate ?? Date()
+        model.merchant = bill.merchant ?? ""
+        model.totalAmount = String(format: "%.2f", bill.totalAmount)
+        model.minAmount = String(format: "%.2f", bill.minAmount)
+        model.paid = bill.paid
+        model.year = bill.period?.currentYear ?? Date().currentYear
+        model.month = month
+        model.editMonth = month - 1
+        return model
+    }
+    
+    private func addItem() {
+        withAnimation {
+            isSheetPresented.toggle()
+        }
+    }
+    
+    private func deleteItems(offsets: IndexSet) {
+        withAnimation {
+            offsets.forEach { index in
+//                let model = billModels[index]
+//                print("Object for DELETE \(model)")
+//                if let bill = getBill(by: model.id) {
+//                    print("account Object for DELETE \(bill)")
+//                    viewContext.delete(bill)
+//                }
+            }
+
+            do {
+                try viewContext.save()
+                reloadData()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
+    }
+    
+    private func getBill(by id: String) -> Bill? {
+        let fetchRequest: NSFetchRequest<Bill> = Bill.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == \(UUID(uuidString: id) ?? UUID())")
+        do {
+            let results = try PersistenceController.shared.container.viewContext.fetch(fetchRequest)
+            print("OBJECT FOUND id = \(id) \n Result = \(results)")
+            return results.first
+        } catch {
+            return nil
+        }
+    }
+    var billModelsTmp: [String : [BillModel]] = [:]
     var body: some View {
         NavigationView {
             List {
-                Section {
-                    ForEach($accountModels) { model in
-                        NavigationLink {
-//                            AccountDetailsView(accountModel: model.wrappedValue,
-//                                               needsRefresh: $refresh)
-//                                .environment(\.managedObjectContext, viewContext)
-//                                .navigationBarBackButtonHidden()
-//                                .onDisappear {
-//                                    print("onDisappear \(refresh)")
-//                                    reloadData()
-//                                }
-                        } label: {
-//                            AccountItemView(account: model)
+                ForEach(billModels.sorted(by: { (lhs, rhs) -> Bool in
+                    lhs.key < rhs.key
+                }), id: \.key) { period, billsArray in
+                    Section(period.formattedDate(format: .period)) {
+                        ForEach(billsArray) { model in
+                            NavigationLink {                                
+                                BillDetailsView(billModel: model, needsRefresh: $refresh)
+                                    .environment(\.managedObjectContext, viewContext)
+                                    .navigationBarBackButtonHidden()
+                                    .onDisappear {
+                                    reloadData()
+                                }
+                            } label: {
+                                BillsItemView(bill: model)
+                            }
                         }
                     }
-//                    .onDelete(perform: deleteItems)
-                }
-                
-                Section {
-//                    ForEach(totalsByCurrencies) { model in
-//                        HStack {
-//                            Text("Total Balance").font(.headline)
-//                            Spacer()
-//                            Text(model.currency).font(.headline)
-//                            Text("\(model.total, specifier: "%.2f")").font(.subheadline)
-//                        }
-//                    }
-                    
-                }
+                }.onDelete(perform: deleteItems)
                 
             }
             .refreshable {
-                print("Refreshing")
                 reloadData()
             }
             .toolbar {
@@ -61,9 +126,9 @@ struct BillsView: View {
                     EditButton()
                 }
                 ToolbarItem {
-//                    Button(action: addItem) {
-//                        Label("Add Item", systemImage: "plus")
-//                    }
+                    Button(action: addItem) {
+                        Label("Add Item", systemImage: "plus")
+                    }
                 }
             }
             .sheet(isPresented: $isSheetPresented,
@@ -72,8 +137,8 @@ struct BillsView: View {
                     },
                    content: {
                         NavigationView {
-//                            AccountDetailsView(accountModel: AccountModel(), needsRefresh: $refresh)
-//                            .environment(\.managedObjectContext, viewContext)
+                            BillDetailsView(billModel: BillModel(), needsRefresh: $refresh)
+                                .environment(\.managedObjectContext, viewContext)
                         }
                     })
             .navigationTitle("Bills")
@@ -86,6 +151,6 @@ struct BillsView: View {
 
 struct BillsView_Previews: PreviewProvider {
     static var previews: some View {
-        BillsView()
+        BillsView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }

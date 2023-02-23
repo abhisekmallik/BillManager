@@ -41,14 +41,6 @@ struct AccountDetailsView: View {
                             .floatingStyle(ThemeTextFieldStyle())
                             .frame(height: 50)
                     
-//                    FloatingLabelTextField($accountModel.balance, placeholder: "Account Balance", editingChanged: { (isChanged) in
-//
-//                            }) {
-//
-//                            }
-//                            .floatingStyle(ThemeTextFieldStyle())
-//                            .frame(height: 50)
-                    
                     FloatingLabelTextField($accountModel.balance, placeholder: "Account Balance", editingChanged: { _ in })
                         .addValidation(.init(condition: accountModel.balance.isValid(.currency), errorMessage: "Invalid Amount")) /// Sets the validation condition.
                                             .isShowError(true) /// Sets the is show error message.
@@ -81,45 +73,46 @@ struct AccountDetailsView: View {
                 }
             }
             .navigationTitle("Account Details")
-                .navigationBarItems(leading: Button("Cancel", action: {
-                    needsRefresh.toggle()
-                    dismiss()
-                }))
-                .navigationBarItems(trailing: Button("Done", action: {
-                    withAnimation {
-                        defer {
-                            needsRefresh.toggle()
-                            dismiss()
-                        }
-                        
-                        
-                        let account = getAccount(id: accountModel.id)
-                        print("account FOUND \(String(describing: account))")
-                        
-                        let dataModel = account ?? Account(context: viewContext)
-                        
-                        print("dataModel BEFORE \(dataModel)")
-                        dataModel.id = UUID(uuidString: accountModel.id)
-                        dataModel.accountHolder = accountModel.accountHolder
-                        dataModel.accountNumber = accountModel.accountNumber
-                        dataModel.bank = accountModel.bank
-                        dataModel.balance = Double(accountModel.balance) ?? 0.0
-                        dataModel.currency = accountModel.currency
-                        dataModel.type = accountModel.type
-                        print("dataModel AFTER \(dataModel)")
-
-                        do {
-                            try viewContext.save()
-                        } catch {
-                            // Replace this implementation with code to handle the error appropriately.
-                            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                            let nsError = error as NSError
-                            print("Unresolved error \(nsError), \(nsError.userInfo)")
-                            viewContext.rollback()
-                        }
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(leading: Button("Cancel", action: {
+                needsRefresh.toggle()
+                dismiss()
+            }))
+            .navigationBarItems(trailing: Button("Done", action: {
+                withAnimation {
+                    defer {
+                        needsRefresh.toggle()
+                        dismiss()
                     }
+                    
+                    
+                    let account = getAccount(id: accountModel.id)
+                    print("account FOUND \(String(describing: account))")
+                    
+                    let dataModel = account ?? Account(context: viewContext)
+                    
+                    print("dataModel BEFORE \(dataModel)")
+                    dataModel.id = UUID(uuidString: accountModel.id)
+                    dataModel.accountHolder = accountModel.accountHolder
+                    dataModel.accountNumber = accountModel.accountNumber
+                    dataModel.bank = accountModel.bank
+                    dataModel.balance = Double(accountModel.balance) ?? 0.0
+                    dataModel.currency = accountModel.currency
+                    dataModel.type = accountModel.type
+                    print("dataModel AFTER \(dataModel)")
 
-                }))
+                    do {
+                        try viewContext.save()
+                    } catch {
+                        // Replace this implementation with code to handle the error appropriately.
+                        // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                        let nsError = error as NSError
+                        print("Unresolved error \(nsError), \(nsError.userInfo)")
+                        viewContext.rollback()
+                    }
+                }
+
+            }))
 
         }
     }

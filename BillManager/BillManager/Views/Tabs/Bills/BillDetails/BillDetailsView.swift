@@ -25,14 +25,14 @@ struct BillDetailsView: View {
         return years
     }
     
-    
-    private let currencies = ModelDataManager().currencies
-    
     private func getBill(id: String) -> Bill? {
         let predicate = NSPredicate(format: "id == %@", id)
-        let bill: Bill? = PersistenceController.shared.fetchObject(predicate: predicate)
-        return bill
+        let object: Bill? = PersistenceController.shared.fetchObject(predicate: predicate)
+        return object
     }
+    
+    
+    private let currencies = ModelDataManager().currencies
     
     var body: some View {
         Form {
@@ -71,12 +71,55 @@ struct BillDetailsView: View {
                     displayedComponents: [.date]
                 ).font(.caption)
                     
-                MonthYearPickerView(month: $billModel.month, year: $billModel.year, pickerLabel: "Period")
+                MonthYearPickerView(month: $billModel.editMonth, year: $billModel.year, pickerLabel: "Period")
                 
                 Toggle(isOn: $billModel.paid) {
                     Text("Bill Paid").font(.caption)
                 }.toggleStyle(.switch).tint(.gray)
             }
+            .navigationTitle("Bill Details")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(leading: Button("Cancel", action: {
+                needsRefresh.toggle()
+                dismiss()
+            }))
+            .navigationBarItems(trailing: Button("Done", action: {
+                withAnimation {
+                    defer {
+                        needsRefresh.toggle()
+                        dismiss()
+                    }
+                    
+                    
+                    let bill = getBill(id: billModel.id)
+                    print("account FOUND \(String(describing: bill))")
+
+                    let dataModel = bill ?? Bill(context: viewContext)
+                    
+                    print("dataModel BEFORE \(dataModel)")
+                    dataModel.id = UUID(uuidString: billModel.id)
+                    dataModel.currency = billModel.currency
+                    dataModel.dueDate = billModel.dueDate
+                    dataModel.merchant = billModel.merchant
+                    dataModel.minAmount = Double(billModel.minAmount) ?? 0.0
+                    dataModel.totalAmount = Double(billModel.totalAmount) ?? 0.0
+                    dataModel.paid = billModel.paid
+                    billModel.month = billModel.editMonth + 1
+                    dataModel.period = billModel.period
+                    print("dataModel AFTER \(dataModel)")
+
+                    do {
+                        try viewContext.save()
+                    } catch {
+                        // Replace this implementation with code to handle the error appropriately.
+                        // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                        let nsError = error as NSError
+                        print("Unresolved error \(nsError), \(nsError.userInfo)")
+                        viewContext.rollback()
+                    }
+                }
+
+            }))
         }
     }
 }

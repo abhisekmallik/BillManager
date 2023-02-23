@@ -8,6 +8,7 @@
 import Foundation
 
 extension Date {
+    
     var currentYear: Int {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.year], from: self)
@@ -20,5 +21,12 @@ extension Date {
         let components = calendar.dateComponents([.month], from: self)
         let month = components.month ?? 0
         return month
+    }
+    
+    func formattedDate(format: DateFormatter.Format) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = format.rawValue
+        let date = formatter.string(from: self)
+        return date
     }
 }

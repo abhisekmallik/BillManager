@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct BillModel: Identifiable {
     var id = UUID().uuidString
@@ -17,6 +18,7 @@ struct BillModel: Identifiable {
     var totalAmount = ""
     var year = Date().currentYear
     var month = Date().currentMonth
+    var editMonth = Date().currentMonth - 1
     var period: Date? {
         var dateCmpt = DateComponents()
         dateCmpt.month = month
@@ -28,8 +30,29 @@ struct BillModel: Identifiable {
     var formattedPeriod: String {
         guard let period = period else { return "" }
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMM yyyy"
+        formatter.dateFormat = DateFormatter.Format.period.rawValue
         let date = formatter.string(from: period)
         return date
+    }
+    var formattedDueDate: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = DateFormatter.Format.dueDate.rawValue
+        let date = formatter.string(from: dueDate)
+        return date
+    }
+    var dueDateColor: Color {
+        guard !paid else {
+            return .black
+        }
+        let result = dueDate.compare(Date())
+        switch result {
+        case .orderedSame, .orderedAscending:
+            return .red
+        default:
+            return .black
+        }
+    }
+    var paidColor: Color {
+        return paid ? .green : .red
     }
 }

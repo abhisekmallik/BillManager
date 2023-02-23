@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A94B7A929A6040C00B30D83 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A94B7A829A6040C00B30D83 /* String.swift */; };
+		1A94B7AB29A61B9300B30D83 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A94B7AA29A61B9300B30D83 /* Array.swift */; };
+		1AE0C98329A4EFFB00ADF54C /* BillsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE0C98229A4EFFB00ADF54C /* BillsItemView.swift */; };
+		1AF41B4329A77F6F00174481 /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF41B4229A77F6F00174481 /* DateFormatter.swift */; };
 		586463FE5045E5E3AAAD2278 /* Pods_BillManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 404D12B81F4E1A876E2281AC /* Pods_BillManager.framework */; };
 		6F17987478BA774973F1CD9F /* Pods_BillManagerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9979E57B1DF09F1E8EA19496 /* Pods_BillManagerTests.framework */; };
 		907C7FDE2FDF2C62DA5A6CC5 /* Pods_BillManager_BillManagerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B5575C93A4FFD27020E8752 /* Pods_BillManager_BillManagerUITests.framework */; };
@@ -56,6 +60,10 @@
 
 /* Begin PBXFileReference section */
 		0B5575C93A4FFD27020E8752 /* Pods_BillManager_BillManagerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BillManager_BillManagerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A94B7A829A6040C00B30D83 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		1A94B7AA29A61B9300B30D83 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		1AE0C98229A4EFFB00ADF54C /* BillsItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillsItemView.swift; sourceTree = "<group>"; };
+		1AF41B4229A77F6F00174481 /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
 		27E54868950183BA8ED376F7 /* Pods-BillManager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BillManager.release.xcconfig"; path = "Target Support Files/Pods-BillManager/Pods-BillManager.release.xcconfig"; sourceTree = "<group>"; };
 		334BF7D3BB21BFBFB3D00CD6 /* Pods-BillManagerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BillManagerTests.release.xcconfig"; path = "Target Support Files/Pods-BillManagerTests/Pods-BillManagerTests.release.xcconfig"; sourceTree = "<group>"; };
 		404D12B81F4E1A876E2281AC /* Pods_BillManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BillManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,7 +144,10 @@
 		AE844418299F53EF00A4977B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				1A94B7AA29A61B9300B30D83 /* Array.swift */,
 				AE844419299F540B00A4977B /* Date.swift */,
+				1A94B7A829A6040C00B30D83 /* String.swift */,
+				1AF41B4229A77F6F00174481 /* DateFormatter.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -153,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				AEF3EC7B299511DD00535D0C /* BillsView.swift */,
+				1AE0C98229A4EFFB00ADF54C /* BillsItemView.swift */,
 			);
 			path = BillsView;
 			sourceTree = "<group>";
@@ -249,9 +261,9 @@
 			isa = PBXGroup;
 			children = (
 				AEF13382299A53F70042D106 /* CustomUI */,
-				AECC4C0229952BA4001D4732 /* Themes */,
 				AEF3EC72299510FC00535D0C /* Home */,
 				AEF3EC6D299510C300535D0C /* Tabs */,
+				AECC4C0229952BA4001D4732 /* Themes */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -600,10 +612,12 @@
 			files = (
 				AECC4C0829960FD8001D4732 /* TotalModel.swift in Sources */,
 				AEF3EC852995181400535D0C /* CurrencyModel.swift in Sources */,
+				1AE0C98329A4EFFB00ADF54C /* BillsItemView.swift in Sources */,
 				AECC4C0629960EED001D4732 /* AccountItemView.swift in Sources */,
 				AEF3EC78299511A000535D0C /* AccountListView.swift in Sources */,
 				AEF3EC45299503E700535D0C /* PersistenceController.swift in Sources */,
 				AEF3EC7C299511DE00535D0C /* BillsView.swift in Sources */,
+				1AF41B4329A77F6F00174481 /* DateFormatter.swift in Sources */,
 				AEF3EC48299503E700535D0C /* BillManager.xcdatamodeld in Sources */,
 				AEF3EC80299511FD00535D0C /* SettingsView.swift in Sources */,
 				AEF3EC742995113800535D0C /* HomeView.swift in Sources */,
@@ -614,7 +628,9 @@
 				AEF3EC3C299503E400535D0C /* BillManagerApp.swift in Sources */,
 				AEF13381299A31A80042D106 /* BillDetailsView.swift in Sources */,
 				AEF3EC7E299511ED00535D0C /* ReportsView.swift in Sources */,
+				1A94B7AB29A61B9300B30D83 /* Array.swift in Sources */,
 				AEF1337D299A2C360042D106 /* BillModel.swift in Sources */,
+				1A94B7A929A6040C00B30D83 /* String.swift in Sources */,
 				AE844417299E52A500A4977B /* MonthYearPickerView.swift in Sources */,
 				AEF3EC7A299511B200535D0C /* AccountDetailsView.swift in Sources */,
 			);

@@ -124,8 +124,7 @@ struct AccountListView: View {
                     }
                     .onDelete(perform: deleteItems)
                 }
-                
-                Section {
+                Section("Balance") {
                     ForEach(totalsByCurrencies) { model in
                         HStack {
                             Text("Total Balance").font(.headline)
@@ -134,9 +133,7 @@ struct AccountListView: View {
                             Text("\(model.total, specifier: "%.2f")").font(.subheadline)
                         }
                     }
-                    
                 }
-                
             }
             .refreshable {
                 print("Refreshing")
