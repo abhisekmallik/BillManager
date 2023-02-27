@@ -178,6 +178,36 @@ struct PersistenceController {
         bill1.paid = false
         bill1.period = "01-02-2023".toDate(withFormat: "dd-MM-yyyy") ?? Date()
         
+        let bill2 = Bill(context: viewContext)
+        bill2.id = UUID()
+        bill2.currency = "AED"
+        bill2.dueDate = "24-02-2023".toDate(withFormat: "dd-MM-yyyy") ?? Date()
+        bill2.merchant = "Mashreq"
+        bill2.minAmount = 400
+        bill2.totalAmount = 500
+        bill2.paid = false
+        bill2.period = "02-02-2023".toDate(withFormat: "dd-MM-yyyy") ?? Date()
+
+        let bill3 = Bill(context: viewContext)
+        bill3.id = UUID()
+        bill3.currency = "AED"
+        bill3.dueDate = "27-03-2023".toDate(withFormat: "dd-MM-yyyy") ?? Date()
+        bill3.merchant = "DEWA"
+        bill3.minAmount = 400
+        bill3.totalAmount = 500
+        bill3.paid = false
+        bill3.period = "02-03-2023".toDate(withFormat: "dd-MM-yyyy") ?? Date()
+
+        let bill4 = Bill(context: viewContext)
+        bill4.id = UUID()
+        bill4.currency = "AED"
+        bill4.dueDate = "24-04-2023".toDate(withFormat: "dd-MM-yyyy") ?? Date()
+        bill4.merchant = "Mashreq"
+        bill4.minAmount = 400
+        bill4.totalAmount = 500
+        bill4.paid = false
+        bill4.period = "02-04-2023".toDate(withFormat: "dd-MM-yyyy") ?? Date()
+        
         do {
             try viewContext.save()
         } catch {

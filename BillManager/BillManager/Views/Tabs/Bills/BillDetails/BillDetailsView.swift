@@ -83,7 +83,7 @@ struct BillDetailsView: View {
                 needsRefresh.toggle()
                 dismiss()
             }))
-            .navigationBarItems(trailing: Button("Done", action: {
+            .navigationBarItems(trailing: Button((getBill(id: billModel.id) != nil) ? "Update" : "Save", action: {
                 withAnimation {
                     defer {
                         needsRefresh.toggle()
