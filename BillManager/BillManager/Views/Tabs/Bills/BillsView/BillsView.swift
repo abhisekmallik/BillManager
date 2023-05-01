@@ -60,32 +60,9 @@ struct BillsView: View {
         }
     }
     
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.forEach { index in
-//                let model = billModels[index]
-//                print("Object for DELETE \(model)")
-//                if let bill = getBill(by: model.id) {
-//                    print("account Object for DELETE \(bill)")
-//                    viewContext.delete(bill)
-//                }
-            }
-
-            do {
-                try viewContext.save()
-                reloadData()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
-    }
-    
     private func getBill(by id: String) -> Bill? {
         let fetchRequest: NSFetchRequest<Bill> = Bill.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == \(UUID(uuidString: id) ?? UUID())")
+        fetchRequest.predicate = NSPredicate(format: "id == %@", id)
         do {
             let results = try PersistenceController.shared.container.viewContext.fetch(fetchRequest)
             print("OBJECT FOUND id = \(id) \n Result = \(results)")
@@ -113,10 +90,30 @@ struct BillsView: View {
                             } label: {
                                 BillsItemView(bill: model)
                             }
+                        }.onDelete { indexSet in
+                            withAnimation {
+                                indexSet.forEach { index in
+                                    print("Object at index for DELETE \(index)")
+                                    let model = billsArray[index]
+                                    print("Object for DELETE \(model)")
+                                    if let bill = getBill(by: model.id) {
+                                        viewContext.delete(bill)
+                                    }
+                                }
+
+                                do {
+                                    try viewContext.save()
+                                    reloadData()
+                                } catch {
+                                    // Replace this implementation with code to handle the error appropriately.
+                                    // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                                    let nsError = error as NSError
+                                    fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+                                }
+                            }
                         }
                     }
-                }.onDelete(perform: deleteItems)
-                
+                }
             }
             .refreshable {
                 reloadData()
