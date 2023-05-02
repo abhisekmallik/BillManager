@@ -12,7 +12,7 @@ struct AccountListView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
     @State private var accountModels: [AccountModel] = []
-    @State private var isSheetPresented = false
+    @State private var isAccountDetailsPresented = false
     @State private var refresh = false
         
     private func reloadData() {
@@ -65,7 +65,7 @@ struct AccountListView: View {
     
     private func addItem() {
         withAnimation {
-            isSheetPresented.toggle()
+            isAccountDetailsPresented.toggle()
         }
     }
     
@@ -149,7 +149,7 @@ struct AccountListView: View {
                     }
                 }
             }
-            .sheet(isPresented: $isSheetPresented,
+            .sheet(isPresented: $isAccountDetailsPresented,
                    onDismiss: {
                         reloadData()
                     },

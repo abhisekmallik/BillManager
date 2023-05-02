@@ -16,6 +16,7 @@ struct BillModel: Identifiable {
     var minAmount = ""
     var paid = false
     var totalAmount = ""
+    var paidDate: Date?
     var year = Date().currentYear
     var month = Date().currentMonth
     var editMonth = Date().currentMonth - 1

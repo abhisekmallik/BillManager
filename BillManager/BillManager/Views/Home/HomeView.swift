@@ -10,7 +10,7 @@ import CoreData
 
 struct HomeView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @State private var selection: Tab = .accounts
+    @State private var tabSelection: Tab = .accounts
     
     enum Tab {
         case accounts
@@ -20,20 +20,20 @@ struct HomeView: View {
     }
 
     var body: some View {
-        TabView(selection: $selection) {
+        TabView(selection: $tabSelection) {
             AccountListView().tabItem {
                 Label("Accounts", systemImage: "note.text.badge.plus")
             }.tag(Tab.accounts)
             BillsView().tabItem {
                 //"square.stack.fill"
                 Label("Biils", systemImage: "doc.on.clipboard.fill")
-            }.tag(Tab.accounts)
+            }.tag(Tab.bills)
             ReportsView().tabItem {
                 Label("Reports", systemImage: "tray.full.fill")
-            }.tag(Tab.accounts)
+            }.tag(Tab.reports)
             SettingsView().tabItem {
                 Label("Settings", systemImage: "gear")
-            }.tag(Tab.accounts)
+            }.tag(Tab.settings)
         }
     }
 }

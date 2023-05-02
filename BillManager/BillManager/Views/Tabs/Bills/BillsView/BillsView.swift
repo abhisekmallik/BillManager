@@ -12,8 +12,8 @@ struct BillsView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
     @State private var billModels: [Date : [BillModel]] = [:]
-    @State private var isSheetPresented = false
-    @State private var refresh = false
+    @State private var isBillDetailsPresented = false
+    @State private var refreshBills = false
         
     private func reloadData() {
         billModels = getAllBills()
@@ -51,12 +51,13 @@ struct BillsView: View {
         model.year = bill.period?.currentYear ?? Date().currentYear
         model.month = month
         model.editMonth = month - 1
+        model.paidDate = bill.paidDate ?? Date()
         return model
     }
     
     private func addItem() {
         withAnimation {
-            isSheetPresented.toggle()
+            isBillDetailsPresented.toggle()
         }
     }
     
@@ -81,7 +82,7 @@ struct BillsView: View {
                     Section(period.formattedDate(format: .period)) {
                         ForEach(billsArray) { model in
                             NavigationLink {                                
-                                BillDetailsView(billModel: model, needsRefresh: $refresh)
+                                BillDetailsView(billModel: model, needsRefresh: $refreshBills)
                                     .environment(\.managedObjectContext, viewContext)
                                     .navigationBarBackButtonHidden()
                                     .onDisappear {
@@ -128,13 +129,13 @@ struct BillsView: View {
                     }
                 }
             }
-            .sheet(isPresented: $isSheetPresented,
+            .sheet(isPresented: $isBillDetailsPresented,
                    onDismiss: {
                         reloadData()
                     },
                    content: {
                         NavigationView {
-                            BillDetailsView(billModel: BillModel(), needsRefresh: $refresh)
+                            BillDetailsView(billModel: BillModel(), needsRefresh: $refreshBills)
                                 .environment(\.managedObjectContext, viewContext)
                         }
                     })

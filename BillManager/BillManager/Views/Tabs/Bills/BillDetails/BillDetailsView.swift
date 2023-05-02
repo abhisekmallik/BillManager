@@ -76,6 +76,14 @@ struct BillDetailsView: View {
                 Toggle(isOn: $billModel.paid) {
                     Text("Bill Paid").font(.caption)
                 }.toggleStyle(.switch).tint(.gray)
+                
+                if billModel.paid {
+                    DatePicker(
+                        "Paid Date",
+                        selection: Binding<Date>(get: { billModel.paidDate ?? Date() }, set: { billModel.paidDate = $0 }),
+                        displayedComponents: [.date]
+                    ).font(.caption)
+                }
             }
             .navigationTitle("Bill Details")
             .navigationBarTitleDisplayMode(.inline)
@@ -106,6 +114,7 @@ struct BillDetailsView: View {
                     dataModel.paid = billModel.paid
                     billModel.month = billModel.editMonth + 1
                     dataModel.period = billModel.period
+                    dataModel.paidDate = billModel.paidDate
                     print("dataModel AFTER \(dataModel)")
 
                     do {
@@ -126,19 +135,19 @@ struct BillDetailsView: View {
 
 
 
-struct iOSCheckboxToggleStyle: ToggleStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        Button(action: {
-            configuration.isOn.toggle()
-        }, label: {
-            HStack {
-                configuration.label.foregroundColor(.black)
-                Image(systemName: configuration.isOn ? "checkmark.square" : "square").foregroundColor(.gray)
-                Spacer()
-            }
-        })
-    }
-}
+//struct iOSCheckboxToggleStyle: ToggleStyle {
+//    func makeBody(configuration: Configuration) -> some View {
+//        Button(action: {
+//            configuration.isOn.toggle()
+//        }, label: {
+//            HStack {
+//                configuration.label.foregroundColor(.black)
+//                Image(systemName: configuration.isOn ? "checkmark.square" : "square").foregroundColor(.gray)
+//                Spacer()
+//            }
+//        })
+//    }
+//}
 
 struct BillDetailsView_Previews: PreviewProvider {
     @State private static var refresh = true
