@@ -27,32 +27,12 @@ struct BillsView: View {
         let bills: [Bill] = PersistenceController.shared.fetchAllObjects(sortDescriptors: sortDescriptors) ?? []
 
         bills.forEach { bill in
-            let model = getBillModel(bill: bill)
+            let model = PersistenceDataManager.shared.getBillModel(bill: bill)
             models.append(model)
         }
         
         let groupedBills = models.sliced(by: [.month, .year], for: \.period!)
         return groupedBills
-    }
-    
-    private func getBillModel(bill: Bill?) -> BillModel {
-        guard let bill = bill else {
-            return BillModel()
-        }
-        let month = bill.period?.currentMonth ?? Date().currentMonth
-        var model = BillModel()
-        model.id = bill.id?.uuidString ?? UUID().uuidString
-        model.currency = bill.currency ?? ""
-        model.dueDate = bill.dueDate ?? Date()
-        model.merchant = bill.merchant ?? ""
-        model.totalAmount = String(format: "%.2f", bill.totalAmount)
-        model.minAmount = String(format: "%.2f", bill.minAmount)
-        model.paid = bill.paid
-        model.year = bill.period?.currentYear ?? Date().currentYear
-        model.month = month
-        model.editMonth = month - 1
-        model.paidDate = bill.paidDate ?? Date()
-        return model
     }
     
     private func addItem() {
@@ -61,17 +41,6 @@ struct BillsView: View {
         }
     }
     
-    private func getBill(by id: String) -> Bill? {
-        let fetchRequest: NSFetchRequest<Bill> = Bill.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %@", id)
-        do {
-            let results = try PersistenceController.shared.container.viewContext.fetch(fetchRequest)
-            print("OBJECT FOUND id = \(id) \n Result = \(results)")
-            return results.first
-        } catch {
-            return nil
-        }
-    }
     var billModelsTmp: [String : [BillModel]] = [:]
     var body: some View {
         NavigationView {
@@ -97,7 +66,7 @@ struct BillsView: View {
                                     print("Object at index for DELETE \(index)")
                                     let model = billsArray[index]
                                     print("Object for DELETE \(model)")
-                                    if let bill = getBill(by: model.id) {
+                                    if let bill = PersistenceDataManager.shared.getBill(id: model.id) {
                                         viewContext.delete(bill)
                                     }
                                 }

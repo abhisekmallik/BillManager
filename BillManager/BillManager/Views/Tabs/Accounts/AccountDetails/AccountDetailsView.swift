@@ -19,12 +19,6 @@ struct AccountDetailsView: View {
     private let currencies = ModelDataManager().currencies
     private let types = ["Current", "Savings"]
     
-    private func getAccount(id: String) -> Account? {
-        let predicate = NSPredicate(format: "id == %@", id)
-        let account: Account? = PersistenceController.shared.fetchObject(predicate: predicate)
-        return account
-    }
-    
     var body: some View {
         Form {
             Section {
@@ -86,7 +80,7 @@ struct AccountDetailsView: View {
                     }
                     
                     
-                    let account = getAccount(id: accountModel.id)
+                    let account = PersistenceDataManager.shared.getAccount(id: accountModel.id)
                     print("account FOUND \(String(describing: account))")
                     
                     let dataModel = account ?? Account(context: viewContext)

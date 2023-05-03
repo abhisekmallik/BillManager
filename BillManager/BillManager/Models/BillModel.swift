@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import CoreData
 
 struct BillModel: Identifiable {
     var id = UUID().uuidString
@@ -17,6 +18,8 @@ struct BillModel: Identifiable {
     var paid = false
     var totalAmount = ""
     var paidDate: Date?
+    var paidFrom: Account?
+    var bankPaidFrom = ""
     var year = Date().currentYear
     var month = Date().currentMonth
     var editMonth = Date().currentMonth - 1

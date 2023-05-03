@@ -14,6 +14,7 @@
 		586463FE5045E5E3AAAD2278 /* Pods_BillManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 404D12B81F4E1A876E2281AC /* Pods_BillManager.framework */; };
 		6F17987478BA774973F1CD9F /* Pods_BillManagerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9979E57B1DF09F1E8EA19496 /* Pods_BillManagerTests.framework */; };
 		907C7FDE2FDF2C62DA5A6CC5 /* Pods_BillManager_BillManagerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B5575C93A4FFD27020E8752 /* Pods_BillManager_BillManagerUITests.framework */; };
+		AE57B86D2A02763100F9D2F9 /* PersistenceDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE57B86C2A02763100F9D2F9 /* PersistenceDataManager.swift */; };
 		AE844417299E52A500A4977B /* MonthYearPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE844416299E52A500A4977B /* MonthYearPickerView.swift */; };
 		AE84441A299F540B00A4977B /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE844419299F540B00A4977B /* Date.swift */; };
 		AECC4BFE2995256B001D4732 /* Currency.json in Resources */ = {isa = PBXBuildFile; fileRef = AEF3EC83299517EC00535D0C /* Currency.json */; };
@@ -70,6 +71,7 @@
 		75336074634642C877F62AC5 /* Pods-BillManager-BillManagerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BillManager-BillManagerUITests.release.xcconfig"; path = "Target Support Files/Pods-BillManager-BillManagerUITests/Pods-BillManager-BillManagerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		810F2BD262A0978849F1AE0C /* Pods-BillManager-BillManagerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BillManager-BillManagerUITests.debug.xcconfig"; path = "Target Support Files/Pods-BillManager-BillManagerUITests/Pods-BillManager-BillManagerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		9979E57B1DF09F1E8EA19496 /* Pods_BillManagerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BillManagerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE57B86C2A02763100F9D2F9 /* PersistenceDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceDataManager.swift; sourceTree = "<group>"; };
 		AE844416299E52A500A4977B /* MonthYearPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthYearPickerView.swift; sourceTree = "<group>"; };
 		AE844419299F540B00A4977B /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		AECC4C0329952BB7001D4732 /* ThemeTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeTextFieldStyle.swift; sourceTree = "<group>"; };
@@ -251,8 +253,9 @@
 		AEF3EC6B29950C8E00535D0C /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
-				AEF3EC44299503E700535D0C /* PersistenceController.swift */,
 				AEF3EC46299503E700535D0C /* BillManager.xcdatamodeld */,
+				AEF3EC44299503E700535D0C /* PersistenceController.swift */,
+				AE57B86C2A02763100F9D2F9 /* PersistenceDataManager.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -627,6 +630,7 @@
 				AEF3EC872995188800535D0C /* ModelDataManager.swift in Sources */,
 				AEF3EC3C299503E400535D0C /* BillManagerApp.swift in Sources */,
 				AEF13381299A31A80042D106 /* BillDetailsView.swift in Sources */,
+				AE57B86D2A02763100F9D2F9 /* PersistenceDataManager.swift in Sources */,
 				AEF3EC7E299511ED00535D0C /* ReportsView.swift in Sources */,
 				1A94B7AB29A61B9300B30D83 /* Array.swift in Sources */,
 				AEF1337D299A2C360042D106 /* BillModel.swift in Sources */,

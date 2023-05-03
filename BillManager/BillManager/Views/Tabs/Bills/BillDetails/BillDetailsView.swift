@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FloatingLabelTextFieldSwiftUI
+import CoreData
 
 struct BillDetailsView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -14,9 +15,9 @@ struct BillDetailsView: View {
     
     @State var billModel: BillModel
     @Binding var needsRefresh: Bool
-
-    let monthSymbols = Calendar.current.monthSymbols
     
+    let monthSymbols = Calendar.current.monthSymbols
+        
     var years: [Int] {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.year], from: Date())
@@ -25,14 +26,9 @@ struct BillDetailsView: View {
         return years
     }
     
-    private func getBill(id: String) -> Bill? {
-        let predicate = NSPredicate(format: "id == %@", id)
-        let object: Bill? = PersistenceController.shared.fetchObject(predicate: predicate)
-        return object
-    }
-    
-    
     private let currencies = ModelDataManager().currencies
+    
+    private let accountModels = PersistenceDataManager.shared.getAllAccountsIn()
     
     var body: some View {
         Form {
@@ -77,13 +73,25 @@ struct BillDetailsView: View {
                     Text("Bill Paid").font(.caption)
                 }.toggleStyle(.switch).tint(.gray)
                 
-                if billModel.paid {
+//                if billModel.paid {
                     DatePicker(
                         "Paid Date",
                         selection: Binding<Date>(get: { billModel.paidDate ?? Date() }, set: { billModel.paidDate = $0 }),
                         displayedComponents: [.date]
-                    ).font(.caption)
-                }
+                    ).font(.caption).disabled(!billModel.paid)
+//                }
+                
+                
+                Picker(selection: $billModel.bankPaidFrom) {
+                    ForEach(accountModels, id: \.self) {
+                        Text("\($0.bank!) | \($0.type!) (\($0.accountNumber!))").tag($0.id!.uuidString)
+                    }
+                } label: {
+                    Text("Paid From").font(.caption)
+                }.pickerStyle(.menu).disabled(!billModel.paid)
+                
+//                Text("Selected account: \(String(describing: $billModel.bankPaidFrom))").font(.caption)
+
             }
             .navigationTitle("Bill Details")
             .navigationBarTitleDisplayMode(.inline)
@@ -91,7 +99,7 @@ struct BillDetailsView: View {
                 needsRefresh.toggle()
                 dismiss()
             }))
-            .navigationBarItems(trailing: Button((getBill(id: billModel.id) != nil) ? "Update" : "Save", action: {
+            .navigationBarItems(trailing: Button((PersistenceDataManager.shared.getBill(id: billModel.id) != nil) ? "Update" : "Save", action: {
                 withAnimation {
                     defer {
                         needsRefresh.toggle()
@@ -99,9 +107,12 @@ struct BillDetailsView: View {
                     }
                     
                     
-                    let bill = getBill(id: billModel.id)
-                    print("account FOUND \(String(describing: bill))")
-
+                    let bill = PersistenceDataManager.shared.getBill(id: billModel.id)
+                    print("bill FOUND \(String(describing: bill))")
+                    print("account id: \(String(describing: billModel.bankPaidFrom))")
+                    if !billModel.bankPaidFrom.isEmpty {
+                        print("account model: \(String(describing: PersistenceDataManager.shared.getAccount(id: billModel.bankPaidFrom)))")
+                    }
                     let dataModel = bill ?? Bill(context: viewContext)
                     
                     print("dataModel BEFORE \(dataModel)")
@@ -111,10 +122,21 @@ struct BillDetailsView: View {
                     dataModel.merchant = billModel.merchant
                     dataModel.minAmount = Double(billModel.minAmount) ?? 0.0
                     dataModel.totalAmount = Double(billModel.totalAmount) ?? 0.0
-                    dataModel.paid = billModel.paid
                     billModel.month = billModel.editMonth + 1
                     dataModel.period = billModel.period
                     dataModel.paidDate = billModel.paidDate
+                    if !billModel.bankPaidFrom.isEmpty {
+                        let account = PersistenceDataManager.shared.getAccount(id: billModel.bankPaidFrom)
+                        if !dataModel.paid {
+                            account?.balance -= dataModel.totalAmount
+                        }
+                        
+                        print("account model: \(String(describing: PersistenceDataManager.shared.getAccount(id: billModel.bankPaidFrom)))")
+                        dataModel.paidFromAccount = account
+                    }
+                    
+                    dataModel.paid = billModel.paid
+                    
                     print("dataModel AFTER \(dataModel)")
 
                     do {
@@ -132,22 +154,6 @@ struct BillDetailsView: View {
         }
     }
 }
-
-
-
-//struct iOSCheckboxToggleStyle: ToggleStyle {
-//    func makeBody(configuration: Configuration) -> some View {
-//        Button(action: {
-//            configuration.isOn.toggle()
-//        }, label: {
-//            HStack {
-//                configuration.label.foregroundColor(.black)
-//                Image(systemName: configuration.isOn ? "checkmark.square" : "square").foregroundColor(.gray)
-//                Spacer()
-//            }
-//        })
-//    }
-//}
 
 struct BillDetailsView_Previews: PreviewProvider {
     @State private static var refresh = true
