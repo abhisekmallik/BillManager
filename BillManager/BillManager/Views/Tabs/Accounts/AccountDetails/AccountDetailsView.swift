@@ -12,6 +12,7 @@ import FloatingLabelTextFieldSwiftUI
 struct AccountDetailsView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
+    @Environment(\.colorScheme) private var colorScheme
     
     @State var accountModel: AccountModel
     @Binding var needsRefresh: Bool
@@ -24,23 +25,24 @@ struct AccountDetailsView: View {
             Section {
                 VStack {
                     FloatingLabelTextField($accountModel.bank, placeholder: "Bank Name", editingChanged:{ _ in })
-                            .floatingStyle(ThemeTextFieldStyle())
+                        .floatingStyle(ThemeTextFieldStyle(colorScheme: colorScheme))
                             .frame(height: 50)
                     
                     FloatingLabelTextField($accountModel.accountNumber, placeholder: "Account Number", editingChanged: { _ in })
-                            .floatingStyle(ThemeTextFieldStyle())
+                            .floatingStyle(ThemeTextFieldStyle(colorScheme: colorScheme))
                             .frame(height: 50)
                     
                     FloatingLabelTextField($accountModel.accountHolder, placeholder: "Account Holder", editingChanged: { _ in })
-                            .floatingStyle(ThemeTextFieldStyle())
+                            .floatingStyle(ThemeTextFieldStyle(colorScheme: colorScheme))
                             .frame(height: 50)
                     
                     FloatingLabelTextField($accountModel.balance, placeholder: "Account Balance", editingChanged: { _ in })
                         .addValidation(.init(condition: accountModel.balance.isValid(.currency), errorMessage: "Invalid Amount")) /// Sets the validation condition.
-                                            .isShowError(true) /// Sets the is show error message.
-                                            .errorColor(.red) /// Sets the error color.
-                                            .keyboardType(.numbersAndPunctuation)
-                                            .frame(height: 50)
+                        .isShowError(true) /// Sets the is show error message.
+                        .errorColor(.red) /// Sets the error color.
+                        .floatingStyle(ThemeTextFieldStyle(colorScheme: colorScheme))
+                        .keyboardType(.numbersAndPunctuation)
+                        .frame(height: 50)
                     
                     
                     Spacer()

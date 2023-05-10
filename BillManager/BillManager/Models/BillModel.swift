@@ -44,16 +44,16 @@ struct BillModel: Identifiable {
         let date = formatter.string(from: dueDate)
         return date
     }
-    var dueDateColor: Color {
+    func dueDateColor(colorScheme: ColorScheme) -> Color? {
         guard !paid else {
-            return .black
+            return nil
         }
         let result = dueDate.compare(Date())
         switch result {
         case .orderedSame, .orderedAscending:
             return .red
         default:
-            return .black
+            return nil
         }
     }
     var paidColor: Color {

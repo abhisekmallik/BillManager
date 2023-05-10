@@ -385,7 +385,7 @@
 				AEF3EC34299503E400535D0C /* Sources */,
 				AEF3EC35299503E400535D0C /* Frameworks */,
 				AEF3EC36299503E400535D0C /* Resources */,
-				D31C449C11A4C80C3B3C1407 /* [CP] Embed Pods Frameworks */,
+				E6642FF62204D0F770C5E8EE /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -423,7 +423,7 @@
 				AEF3EC54299503E700535D0C /* Sources */,
 				AEF3EC55299503E700535D0C /* Frameworks */,
 				AEF3EC56299503E700535D0C /* Resources */,
-				6E3625570961A22A43BDCECC /* [CP] Embed Pods Frameworks */,
+				3570B360D23220E358C6B570 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -550,6 +550,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		3570B360D23220E358C6B570 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BillManager-BillManagerUITests/Pods-BillManager-BillManagerUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BillManager-BillManagerUITests/Pods-BillManager-BillManagerUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BillManager-BillManagerUITests/Pods-BillManager-BillManagerUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		37C55784963938C8BE410394 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -572,24 +589,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6E3625570961A22A43BDCECC /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BillManager-BillManagerUITests/Pods-BillManager-BillManagerUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BillManager-BillManagerUITests/Pods-BillManager-BillManagerUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BillManager-BillManagerUITests/Pods-BillManager-BillManagerUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D31C449C11A4C80C3B3C1407 /* [CP] Embed Pods Frameworks */ = {
+		E6642FF62204D0F770C5E8EE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -796,7 +796,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BillManager/Preview Content\"";
-				DEVELOPMENT_TEAM = 736A229UKX;
+				DEVELOPMENT_TEAM = 88BM97T465;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Bill Manager";
@@ -828,7 +828,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BillManager/Preview Content\"";
-				DEVELOPMENT_TEAM = 736A229UKX;
+				DEVELOPMENT_TEAM = 88BM97T465;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Bill Manager";

@@ -12,6 +12,7 @@ import CoreData
 struct BillDetailsView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
+    @Environment(\.colorScheme) private var colorScheme
     
     @State var billModel: BillModel
     @Binding var needsRefresh: Bool
@@ -35,22 +36,24 @@ struct BillDetailsView: View {
             VStack {
                 
                 FloatingLabelTextField($billModel.merchant, placeholder: "Merchant Name", editingChanged: { _ in })
-                        .floatingStyle(ThemeTextFieldStyle())
+                        .floatingStyle(ThemeTextFieldStyle(colorScheme: colorScheme))
                         .frame(height: 50)
                 
                 FloatingLabelTextField($billModel.minAmount, placeholder: "Minimum Amount", editingChanged: { _ in })
                     .addValidation(.init(condition: billModel.minAmount.isValid(.currency), errorMessage: "Invalid Minimum Amount")) /// Sets the validation condition.
-                                        .isShowError(true) /// Sets the is show error message.
-                                        .errorColor(.red) /// Sets the error color.
-                                        .keyboardType(.numbersAndPunctuation)
-                                        .frame(height: 50)
+                    .isShowError(true) /// Sets the is show error message.
+                    .errorColor(.red) /// Sets the error color.
+                    .floatingStyle(ThemeTextFieldStyle(colorScheme: colorScheme))
+                    .keyboardType(.numbersAndPunctuation)
+                    .frame(height: 50)
                 
                 FloatingLabelTextField($billModel.totalAmount, placeholder: "Total Amount", editingChanged: { _ in })
                     .addValidation(.init(condition: billModel.totalAmount.isValid(.currency), errorMessage: "Invalid Total Amount")) /// Sets the validation condition.
-                                        .isShowError(true) /// Sets the is show error message.
-                                        .errorColor(.red) /// Sets the error color.
-                                        .keyboardType(.numbersAndPunctuation)
-                                        .frame(height: 50)
+                    .isShowError(true) /// Sets the is show error message.
+                    .errorColor(.red) /// Sets the error color.
+                    .floatingStyle(ThemeTextFieldStyle(colorScheme: colorScheme))
+                    .keyboardType(.numbersAndPunctuation)
+                    .frame(height: 50)
                 
                 Picker(selection: $billModel.currency) {
                     ForEach(currencies, id: \.name) {

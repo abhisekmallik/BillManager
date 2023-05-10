@@ -8,8 +8,39 @@
 import SwiftUI
 
 struct ReportsView: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    
+    @State private var menuOptions = ["Transactions", "Monthly expenses"]
+    
     var body: some View {
-        Text("Reports")
+        NavigationView {
+            
+            List {
+                Section {
+                    ForEach($menuOptions, id: \.self) { option in
+                        NavigationLink {
+                            SettingsView()
+                                .environment(\.managedObjectContext, viewContext)
+//                                .navigationBarBackButtonHidden()
+                                .onDisappear {
+                                    //                                    print("onDisappear \(refresh)")
+                                    //                                    reloadData()
+                                }
+                        } label: {
+                            Text(option.wrappedValue)
+                        }
+                    }
+                }
+            }
+            .refreshable {
+                print("Refreshing")
+                //reloadData()
+            }
+            .navigationTitle("Reports")
+            .onAppear {
+                //reloadData()
+            }
+        }
     }
 }
 

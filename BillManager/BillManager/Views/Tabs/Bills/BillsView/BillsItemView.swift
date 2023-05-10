@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct BillsItemView: View {
+    @Environment(\.colorScheme) private var colorScheme
     var bill: BillModel
     
     var body: some View {
@@ -16,7 +17,7 @@ struct BillsItemView: View {
                 Text(bill.merchant).font(.headline)
                 Spacer()
                 
-                Text(bill.formattedDueDate).font(.subheadline).foregroundColor(bill.dueDateColor).fontWeight(.bold)
+                Text(bill.formattedDueDate).font(.subheadline).foregroundColor(bill.dueDateColor(colorScheme: colorScheme)).fontWeight(.bold)
             }
             HStack {
                 Text(bill.paid ? "Paid" : "Unpaid").font(.footnote).foregroundColor(bill.paidColor).fontWeight(.bold)
