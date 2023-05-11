@@ -10,12 +10,17 @@ import CoreData
 import FloatingLabelTextFieldSwiftUI
 
 struct AccountDetailsView: View {
+    private enum Field: Int, CaseIterable {
+        case balance
+    }
+    
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) private var colorScheme
     
     @State var accountModel: AccountModel
     @Binding var needsRefresh: Bool
+    @FocusState private var focusedField: Field?
     
     private let currencies = ModelDataManager().currencies
     private let types = ["Current", "Savings"]
@@ -41,8 +46,9 @@ struct AccountDetailsView: View {
                         .isShowError(true) /// Sets the is show error message.
                         .errorColor(.red) /// Sets the error color.
                         .floatingStyle(ThemeTextFieldStyle(colorScheme: colorScheme))
-                        .keyboardType(.numbersAndPunctuation)
+                        .keyboardType(.numberPad)
                         .frame(height: 50)
+                        .focused($focusedField, equals: .balance)
                     
                     
                     Spacer()
@@ -66,6 +72,16 @@ struct AccountDetailsView: View {
                     } label: {
                         Text("Currency").font(.caption)
                     }.pickerStyle(.menu)
+                }
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    if focusedField == .balance {
+                        Spacer()
+                        Button("Done") {
+                            focusedField = nil
+                        }
+                    }
                 }
             }
             .navigationTitle("Account Details")

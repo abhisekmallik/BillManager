@@ -10,12 +10,16 @@ import FloatingLabelTextFieldSwiftUI
 import CoreData
 
 struct BillDetailsView: View {
+    private enum Field: Int, CaseIterable {
+        case minAmount, totalAmount
+    }
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) private var colorScheme
     
     @State var billModel: BillModel
     @Binding var needsRefresh: Bool
+    @FocusState private var focusedField: Field?
     
     let monthSymbols = Calendar.current.monthSymbols
         
@@ -44,8 +48,9 @@ struct BillDetailsView: View {
                     .isShowError(true) /// Sets the is show error message.
                     .errorColor(.red) /// Sets the error color.
                     .floatingStyle(ThemeTextFieldStyle(colorScheme: colorScheme))
-                    .keyboardType(.numbersAndPunctuation)
+                    .keyboardType(.decimalPad)
                     .frame(height: 50)
+                    .focused($focusedField, equals: .minAmount)
                 
                 FloatingLabelTextField($billModel.totalAmount, placeholder: "Total Amount", editingChanged: { _ in })
                     .addValidation(.init(condition: billModel.totalAmount.isValid(.currency), errorMessage: "Invalid Total Amount")) /// Sets the validation condition.
@@ -54,6 +59,7 @@ struct BillDetailsView: View {
                     .floatingStyle(ThemeTextFieldStyle(colorScheme: colorScheme))
                     .keyboardType(.decimalPad)
                     .frame(height: 50)
+                    .focused($focusedField, equals: .totalAmount)
                 
                 Picker(selection: $billModel.currency) {
                     ForEach(currencies, id: \.name) {
@@ -61,7 +67,8 @@ struct BillDetailsView: View {
                     }
                 } label: {
                     Text("Currency").font(.caption)
-                }.pickerStyle(.menu)
+                }
+                .pickerStyle(.menu)
                 
                 
                 DatePicker(
@@ -94,6 +101,16 @@ struct BillDetailsView: View {
                     } label: {
                         Text("Paid From").font(.caption)
                     }.pickerStyle(.menu).disabled(!billModel.paid)
+                }
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    if focusedField == .minAmount || focusedField == .totalAmount {
+                        Spacer()
+                        Button("Done") {
+                            focusedField = nil
+                        }
+                    }
                 }
             }
             .navigationTitle("Bill Details")
