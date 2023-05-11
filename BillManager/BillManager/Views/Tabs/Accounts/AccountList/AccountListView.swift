@@ -12,7 +12,7 @@ struct AccountListView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
     @State private var accountModels: [AccountModel] = []
-    @State private var isSheetPresented = false
+    @State private var isAccountDetailsPresented = false
     @State private var refresh = false
         
     private func reloadData() {
@@ -21,14 +21,10 @@ struct AccountListView: View {
     
     private func getAllAccounts() -> [AccountModel] {
         accountModels = []
-        let sortDescriptors = [
-            NSSortDescriptor(keyPath: \Account.bank, ascending: true),
-            NSSortDescriptor(keyPath: \Account.accountNumber, ascending: false)
-        ]
-        let accounts: [Account] = PersistenceController.shared.fetchAllObjects(sortDescriptors: sortDescriptors) ?? []
+        let accounts = PersistenceDataManager.shared.getAllAccounts()
 
         accounts.forEach { account in            
-            let model = getAccountModel(account: account)
+            let model = PersistenceDataManager.shared.getAccountModel(account: account)
             
             accountModels.append(model)
         }
@@ -48,36 +44,9 @@ struct AccountListView: View {
         return totals
     }
     
-    private func getAccountModel(account: Account?) -> AccountModel {
-        guard let account = account else {
-            return AccountModel()
-        }
-        var model = AccountModel()
-        model.id = account.id?.uuidString ?? UUID().uuidString
-        model.accountNumber = account.accountNumber ?? ""
-        model.bank = account.bank ?? ""
-        model.accountHolder = account.accountHolder ?? ""
-        model.balance = String(format: "%.2f", account.balance)
-        model.currency = account.currency ?? ""
-        model.type = account.type ?? ""
-        return model
-    }
-    
     private func addItem() {
         withAnimation {
-            isSheetPresented.toggle()
-        }
-    }
-    
-    private func getAccount(by accountNumber: String) -> Account? {
-        let fetchRequest: NSFetchRequest<Account> = Account.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "accountNumber == \(accountNumber)")
-        do {
-            let results = try PersistenceController.shared.container.viewContext.fetch(fetchRequest)
-            print("OBJECT FOUND Account No = \(accountNumber) \n Result = \(results)")
-            return results.first
-        } catch {
-            return nil
+            isAccountDetailsPresented.toggle()
         }
     }
 
@@ -86,7 +55,7 @@ struct AccountListView: View {
             offsets.forEach { index in
                 let model = accountModels[index]
                 print("Object for DELETE \(model)")
-                if let account = getAccount(by: model.accountNumber) {
+                if let account = PersistenceDataManager.shared.getAccount(by: model.accountNumber) {
                     print("account Object for DELETE \(account)")
                     viewContext.delete(account)
                 }
@@ -149,7 +118,7 @@ struct AccountListView: View {
                     }
                 }
             }
-            .sheet(isPresented: $isSheetPresented,
+            .sheet(isPresented: $isAccountDetailsPresented,
                    onDismiss: {
                         reloadData()
                     },

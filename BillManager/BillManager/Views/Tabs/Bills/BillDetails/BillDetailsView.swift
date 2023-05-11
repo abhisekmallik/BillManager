@@ -7,16 +7,22 @@
 
 import SwiftUI
 import FloatingLabelTextFieldSwiftUI
+import CoreData
 
 struct BillDetailsView: View {
+    private enum Field: Int, CaseIterable {
+        case minAmount, totalAmount
+    }
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
+    @Environment(\.colorScheme) private var colorScheme
     
     @State var billModel: BillModel
     @Binding var needsRefresh: Bool
-
-    let monthSymbols = Calendar.current.monthSymbols
+    @FocusState private var focusedField: Field?
     
+    let monthSymbols = Calendar.current.monthSymbols
+        
     var years: [Int] {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.year], from: Date())
@@ -25,36 +31,35 @@ struct BillDetailsView: View {
         return years
     }
     
-    private func getBill(id: String) -> Bill? {
-        let predicate = NSPredicate(format: "id == %@", id)
-        let object: Bill? = PersistenceController.shared.fetchObject(predicate: predicate)
-        return object
-    }
-    
-    
     private let currencies = ModelDataManager().currencies
+    
+    private let accountModels = PersistenceDataManager.shared.getAllAccountsIn()
     
     var body: some View {
         Form {
             VStack {
                 
                 FloatingLabelTextField($billModel.merchant, placeholder: "Merchant Name", editingChanged: { _ in })
-                        .floatingStyle(ThemeTextFieldStyle())
+                        .floatingStyle(ThemeTextFieldStyle(colorScheme: colorScheme))
                         .frame(height: 50)
                 
                 FloatingLabelTextField($billModel.minAmount, placeholder: "Minimum Amount", editingChanged: { _ in })
                     .addValidation(.init(condition: billModel.minAmount.isValid(.currency), errorMessage: "Invalid Minimum Amount")) /// Sets the validation condition.
-                                        .isShowError(true) /// Sets the is show error message.
-                                        .errorColor(.red) /// Sets the error color.
-                                        .keyboardType(.numbersAndPunctuation)
-                                        .frame(height: 50)
+                    .isShowError(true) /// Sets the is show error message.
+                    .errorColor(.red) /// Sets the error color.
+                    .floatingStyle(ThemeTextFieldStyle(colorScheme: colorScheme))
+                    .keyboardType(.decimalPad)
+                    .frame(height: 50)
+                    .focused($focusedField, equals: .minAmount)
                 
                 FloatingLabelTextField($billModel.totalAmount, placeholder: "Total Amount", editingChanged: { _ in })
                     .addValidation(.init(condition: billModel.totalAmount.isValid(.currency), errorMessage: "Invalid Total Amount")) /// Sets the validation condition.
-                                        .isShowError(true) /// Sets the is show error message.
-                                        .errorColor(.red) /// Sets the error color.
-                                        .keyboardType(.numbersAndPunctuation)
-                                        .frame(height: 50)
+                    .isShowError(true) /// Sets the is show error message.
+                    .errorColor(.red) /// Sets the error color.
+                    .floatingStyle(ThemeTextFieldStyle(colorScheme: colorScheme))
+                    .keyboardType(.decimalPad)
+                    .frame(height: 50)
+                    .focused($focusedField, equals: .totalAmount)
                 
                 Picker(selection: $billModel.currency) {
                     ForEach(currencies, id: \.name) {
@@ -62,7 +67,8 @@ struct BillDetailsView: View {
                     }
                 } label: {
                     Text("Currency").font(.caption)
-                }.pickerStyle(.menu)
+                }
+                .pickerStyle(.menu)
                 
                 
                 DatePicker(
@@ -76,6 +82,36 @@ struct BillDetailsView: View {
                 Toggle(isOn: $billModel.paid) {
                     Text("Bill Paid").font(.caption)
                 }.toggleStyle(.switch).tint(.gray)
+                
+//                if billModel.paid {
+                    DatePicker(
+                        "Paid Date",
+                        selection: Binding<Date>(get: { billModel.paidDate ?? Date() }, set: { billModel.paidDate = $0 }),
+                        displayedComponents: [.date]
+                    ).font(.caption).disabled(!billModel.paid)
+//                }
+                
+                
+                if !accountModels.isEmpty {
+                    Picker(selection: $billModel.bankPaidFrom) {
+                        Text("Credit Card Payment").tag("creditCard")
+                        ForEach(accountModels, id: \.self) {
+                            Text("\($0.bank!) | \($0.type!) (\($0.accountNumber!))").tag($0.id!.uuidString)
+                        }
+                    } label: {
+                        Text("Paid From").font(.caption)
+                    }.pickerStyle(.menu).disabled(!billModel.paid)
+                }
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    if focusedField == .minAmount || focusedField == .totalAmount {
+                        Spacer()
+                        Button("Done") {
+                            focusedField = nil
+                        }
+                    }
+                }
             }
             .navigationTitle("Bill Details")
             .navigationBarTitleDisplayMode(.inline)
@@ -83,7 +119,7 @@ struct BillDetailsView: View {
                 needsRefresh.toggle()
                 dismiss()
             }))
-            .navigationBarItems(trailing: Button("Done", action: {
+            .navigationBarItems(trailing: Button((PersistenceDataManager.shared.getBill(id: billModel.id) != nil) ? "Update" : "Save", action: {
                 withAnimation {
                     defer {
                         needsRefresh.toggle()
@@ -91,9 +127,12 @@ struct BillDetailsView: View {
                     }
                     
                     
-                    let bill = getBill(id: billModel.id)
-                    print("account FOUND \(String(describing: bill))")
-
+                    let bill = PersistenceDataManager.shared.getBill(id: billModel.id)
+                    print("bill FOUND \(String(describing: bill))")
+                    print("account id: \(String(describing: billModel.bankPaidFrom))")
+//                    if !billModel.bankPaidFrom.isEmpty {
+//                        print("account model: \(String(describing: PersistenceDataManager.shared.getAccount(id: billModel.bankPaidFrom)))")
+//                    }
                     let dataModel = bill ?? Bill(context: viewContext)
                     
                     print("dataModel BEFORE \(dataModel)")
@@ -103,9 +142,23 @@ struct BillDetailsView: View {
                     dataModel.merchant = billModel.merchant
                     dataModel.minAmount = Double(billModel.minAmount) ?? 0.0
                     dataModel.totalAmount = Double(billModel.totalAmount) ?? 0.0
-                    dataModel.paid = billModel.paid
                     billModel.month = billModel.editMonth + 1
                     dataModel.period = billModel.period
+                    dataModel.paidDate = billModel.paidDate
+                    if !billModel.bankPaidFrom.isEmpty && billModel.bankPaidFrom != "creditCard" {
+                        let account = PersistenceDataManager.shared.getAccount(id: billModel.bankPaidFrom)
+                        if !dataModel.paid {
+                            account?.balance -= dataModel.totalAmount
+                        }
+                        
+                        print("account model: \(String(describing: PersistenceDataManager.shared.getAccount(id: billModel.bankPaidFrom)))")
+                        dataModel.paidFromAccount = account
+                    } else {
+                        dataModel.paidFromAccount = nil
+                    }
+                    
+                    dataModel.paid = billModel.paid
+                    
                     print("dataModel AFTER \(dataModel)")
 
                     do {
@@ -121,22 +174,6 @@ struct BillDetailsView: View {
 
             }))
         }
-    }
-}
-
-
-
-struct iOSCheckboxToggleStyle: ToggleStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        Button(action: {
-            configuration.isOn.toggle()
-        }, label: {
-            HStack {
-                configuration.label.foregroundColor(.black)
-                Image(systemName: configuration.isOn ? "checkmark.square" : "square").foregroundColor(.gray)
-                Spacer()
-            }
-        })
     }
 }
 

@@ -26,12 +26,12 @@ struct MonthYearPickerView: View {
             Spacer()
             Picker(selection: self.$year) {
                 ForEach(years, id: \.self) { year in
-                    Text(String(year))
+                    Text(String(year)).tag(year)
                 }
             } label: {
                 Picker(selection: self.$month) {
                     ForEach(0..<monthSymbols.count, id: \.self) { index in
-                        Text(monthSymbols[index])
+                        Text(monthSymbols[index]).tag(index)
                     }
                 } label: {}.pickerStyle(.menu)
             }.pickerStyle(.menu)

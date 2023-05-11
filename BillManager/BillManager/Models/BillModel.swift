@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import CoreData
 
 struct BillModel: Identifiable {
     var id = UUID().uuidString
@@ -16,6 +17,9 @@ struct BillModel: Identifiable {
     var minAmount = ""
     var paid = false
     var totalAmount = ""
+    var paidDate: Date?
+    var paidFrom: Account?
+    var bankPaidFrom = ""
     var year = Date().currentYear
     var month = Date().currentMonth
     var editMonth = Date().currentMonth - 1
@@ -40,16 +44,16 @@ struct BillModel: Identifiable {
         let date = formatter.string(from: dueDate)
         return date
     }
-    var dueDateColor: Color {
+    func dueDateColor(colorScheme: ColorScheme) -> Color? {
         guard !paid else {
-            return .black
+            return nil
         }
         let result = dueDate.compare(Date())
         switch result {
         case .orderedSame, .orderedAscending:
             return .red
         default:
-            return .black
+            return nil
         }
     }
     var paidColor: Color {
