@@ -36,7 +36,7 @@ struct PersistenceDataManager {
         model.month = month
         model.editMonth = month - 1
         model.paidDate = bill.paidDate ?? Date()
-        model.bankPaidFrom = bill.paidFromAccount?.id?.uuidString ?? ""
+        model.bankPaidFrom = bill.paidFromAccount?.id?.uuidString ?? "creditCard"
         return model
     }
     

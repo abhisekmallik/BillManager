@@ -22,7 +22,7 @@ struct BillsView: View {
     private func getAllBills() -> [Date : [BillModel]] {
         var models: [BillModel] = []
         let sortDescriptors = [
-            NSSortDescriptor(keyPath: \Bill.dueDate, ascending: true)
+            NSSortDescriptor(keyPath: \Bill.dueDate, ascending: false)
         ]
         let bills: [Bill] = PersistenceController.shared.fetchAllObjects(sortDescriptors: sortDescriptors) ?? []
 
@@ -46,7 +46,7 @@ struct BillsView: View {
         NavigationView {
             List {
                 ForEach(billModels.sorted(by: { (lhs, rhs) -> Bool in
-                    lhs.key < rhs.key
+                    lhs.key > rhs.key
                 }), id: \.key) { period, billsArray in
                     Section(period.formattedDate(format: .period)) {
                         ForEach(billsArray) { model in

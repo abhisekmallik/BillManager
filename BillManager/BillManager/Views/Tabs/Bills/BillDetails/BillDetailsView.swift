@@ -52,7 +52,7 @@ struct BillDetailsView: View {
                     .isShowError(true) /// Sets the is show error message.
                     .errorColor(.red) /// Sets the error color.
                     .floatingStyle(ThemeTextFieldStyle(colorScheme: colorScheme))
-                    .keyboardType(.numbersAndPunctuation)
+                    .keyboardType(.decimalPad)
                     .frame(height: 50)
                 
                 Picker(selection: $billModel.currency) {
@@ -85,16 +85,16 @@ struct BillDetailsView: View {
 //                }
                 
                 
-                Picker(selection: $billModel.bankPaidFrom) {
-                    ForEach(accountModels, id: \.self) {
-                        Text("\($0.bank!) | \($0.type!) (\($0.accountNumber!))").tag($0.id!.uuidString)
-                    }
-                } label: {
-                    Text("Paid From").font(.caption)
-                }.pickerStyle(.menu).disabled(!billModel.paid)
-                
-//                Text("Selected account: \(String(describing: $billModel.bankPaidFrom))").font(.caption)
-
+                if !accountModels.isEmpty {
+                    Picker(selection: $billModel.bankPaidFrom) {
+                        Text("Credit Card Payment").tag("creditCard")
+                        ForEach(accountModels, id: \.self) {
+                            Text("\($0.bank!) | \($0.type!) (\($0.accountNumber!))").tag($0.id!.uuidString)
+                        }
+                    } label: {
+                        Text("Paid From").font(.caption)
+                    }.pickerStyle(.menu).disabled(!billModel.paid)
+                }
             }
             .navigationTitle("Bill Details")
             .navigationBarTitleDisplayMode(.inline)
@@ -113,9 +113,9 @@ struct BillDetailsView: View {
                     let bill = PersistenceDataManager.shared.getBill(id: billModel.id)
                     print("bill FOUND \(String(describing: bill))")
                     print("account id: \(String(describing: billModel.bankPaidFrom))")
-                    if !billModel.bankPaidFrom.isEmpty {
-                        print("account model: \(String(describing: PersistenceDataManager.shared.getAccount(id: billModel.bankPaidFrom)))")
-                    }
+//                    if !billModel.bankPaidFrom.isEmpty {
+//                        print("account model: \(String(describing: PersistenceDataManager.shared.getAccount(id: billModel.bankPaidFrom)))")
+//                    }
                     let dataModel = bill ?? Bill(context: viewContext)
                     
                     print("dataModel BEFORE \(dataModel)")
@@ -128,7 +128,7 @@ struct BillDetailsView: View {
                     billModel.month = billModel.editMonth + 1
                     dataModel.period = billModel.period
                     dataModel.paidDate = billModel.paidDate
-                    if !billModel.bankPaidFrom.isEmpty {
+                    if !billModel.bankPaidFrom.isEmpty && billModel.bankPaidFrom != "creditCard" {
                         let account = PersistenceDataManager.shared.getAccount(id: billModel.bankPaidFrom)
                         if !dataModel.paid {
                             account?.balance -= dataModel.totalAmount
@@ -136,6 +136,8 @@ struct BillDetailsView: View {
                         
                         print("account model: \(String(describing: PersistenceDataManager.shared.getAccount(id: billModel.bankPaidFrom)))")
                         dataModel.paidFromAccount = account
+                    } else {
+                        dataModel.paidFromAccount = nil
                     }
                     
                     dataModel.paid = billModel.paid
